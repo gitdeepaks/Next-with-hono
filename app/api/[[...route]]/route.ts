@@ -7,9 +7,10 @@ import {
   AuthConfig,
   getAuthUser,
 } from "@hono/auth-js";
-
 import todos from "./todos";
 import GitHub from "@auth/core/providers/github";
+import { db } from "@/db/drizzle";
+import { DrizzleAdapter } from "@auth/drizzle-adapter";
 
 export const runtime = "edge";
 
@@ -26,6 +27,7 @@ app.route("/todos", todos);
 
 function getAuthConfig(c: Context): AuthConfig {
   return {
+    adapter: DrizzleAdapter(db),
     secret: process.env.AUTH_SECRET,
     providers: [
       GitHub({
