@@ -2,6 +2,7 @@ import { Hono, Context } from "hono";
 import { handle } from "hono/vercel";
 import { authHandler, initAuthConfig, verifyAuth } from "@hono/auth-js";
 import todos from "./todos";
+import quotes from "./quotes";
 
 import { getAuthConfig } from "@/auth.config";
 
@@ -16,7 +17,9 @@ app.get("/protected", verifyAuth(), (c) => {
   return c.json({ auth });
 });
 
-app.route("/todos", todos);
+// at 1:10:00
+// app.route("/todos", todos);
+app.route("/quotes", quotes);
 
 export const GET = handle(app);
 export const POST = handle(app);
