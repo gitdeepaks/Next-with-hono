@@ -17,8 +17,8 @@ app.get("/protected", verifyAuth(), (c) => {
   return c.json({ auth });
 });
 
+app.route("/todos", todos);
 // at 1:10:00
-// app.route("/todos", todos);
 app.route("/quotes", quotes);
 
 export const GET = handle(app);
