@@ -6,6 +6,9 @@ import {
   integer,
 } from "drizzle-orm/pg-core";
 import type { AdapterAccount } from "@auth/core/adapters";
+import { create } from "domain";
+import { exportTraceState } from "next/dist/trace";
+import { relations } from "drizzle-orm";
 
 export const users = pgTable("user", {
   id: text("id").notNull().primaryKey(),
@@ -14,6 +17,10 @@ export const users = pgTable("user", {
   emailVerified: timestamp("emailVerified", { mode: "date" }),
   image: text("image"),
 });
+
+export const usersrelations = relations(users, ({ many }) => ({
+  qoutes: many(qoutes),
+}));
 
 export const accounts = pgTable(
   "account",
@@ -58,3 +65,17 @@ export const verificationTokens = pgTable(
     compoundKey: primaryKey({ columns: [vt.identifier, vt.token] }),
   })
 );
+
+export const qoutes = pgTable("qoutes", {
+  id: text("id").notNull().primaryKey(),
+  text: text("text").notNull(),
+  userId: text("userId").notNull(),
+  createdAt: timestamp("createdAt", { mode: "date" }).notNull().defaultNow(),
+});
+
+export const qoutesrelations = relations(qoutes, ({ one }) => ({
+  user: one(users, {
+    fields: [qoutes.userId],
+    references: [users.id],
+  }),
+}));

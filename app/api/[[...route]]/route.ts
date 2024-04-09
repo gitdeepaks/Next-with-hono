@@ -1,16 +1,9 @@
 import { Hono, Context } from "hono";
 import { handle } from "hono/vercel";
-import {
-  authHandler,
-  initAuthConfig,
-  verifyAuth,
-  AuthConfig,
-  getAuthUser,
-} from "@hono/auth-js";
+import { authHandler, initAuthConfig, verifyAuth } from "@hono/auth-js";
 import todos from "./todos";
-import GitHub from "@auth/core/providers/github";
-import { db } from "@/db/drizzle";
-import { DrizzleAdapter } from "@auth/drizzle-adapter";
+
+import { getAuthConfig } from "@/auth.config";
 
 export const runtime = "edge";
 
@@ -24,19 +17,6 @@ app.get("/protected", verifyAuth(), (c) => {
 });
 
 app.route("/todos", todos);
-
-function getAuthConfig(c: Context): AuthConfig {
-  return {
-    adapter: DrizzleAdapter(db),
-    secret: process.env.AUTH_SECRET,
-    providers: [
-      GitHub({
-        clientId: process.env.GITHUB_ID,
-        clientSecret: process.env.GITHUB_SECRET,
-      }),
-    ],
-  };
-}
 
 export const GET = handle(app);
 export const POST = handle(app);
