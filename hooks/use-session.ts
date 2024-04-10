@@ -13,3 +13,5 @@ export const useSession = () => {
   });
   return { session: data, status };
 };
+
+// export const useQuotes = () => {};

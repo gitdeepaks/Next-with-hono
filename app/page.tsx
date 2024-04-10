@@ -4,6 +4,8 @@ import { Navbar } from "@/components/navbar";
 import { useSession } from "@/hooks/use-session";
 import { Loader2 } from "lucide-react";
 import { redirect } from "next/navigation";
+import QuoteForm from "./quote-form";
+import { QuoteList } from "./qoute-list";
 
 export default function Home() {
   const { status, session } = useSession();
@@ -21,6 +23,8 @@ export default function Home() {
   return (
     <div className="flex min-h-scree w-full flex-col">
       <Navbar />
+      <QuoteForm />
+      <QuoteList />
     </div>
   );
 }
